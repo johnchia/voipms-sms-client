@@ -16,18 +16,23 @@
   -->
 
 <resources>
+    <!-- These correspond to AlarmManager.INTERVAL_XXX with constant values taken from
+         https://developer.android.com/reference/android/app/AlarmManager.html#INTERVAL_HALF_HOUR
+         It's a bit of a hack... -->
     <string-array name="preferences_sync_interval_entries">
+        <item>Every 15 minutes</item>
+        <item>Every half hour</item>
+        <item>Every hour</item>
+        <item>Every half day</item>
         <item>Every day</item>
-        <item>Every 3 days</item>
-        <item>Every 7 days</item>
-        <item>Every 30 days</item>
         <item>Never</item>
     </string-array>
     <string-array name="preferences_sync_interval_values">
-        <item>1</item>
-        <item>3</item>
-        <item>7</item>
-        <item>30</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>43200000</item>
+        <item>86400000</item>
         <item>0</item>
     </string-array>
 </resources>

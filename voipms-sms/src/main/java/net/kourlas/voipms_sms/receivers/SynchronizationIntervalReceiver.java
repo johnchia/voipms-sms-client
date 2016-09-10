@@ -30,26 +30,16 @@ public class SynchronizationIntervalReceiver extends WakefulBroadcastReceiver {
         Preferences preferences = Preferences.getInstance(applicationContext);
         AlarmManager alarmManager = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(applicationContext, SynchronizationIntervalReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        alarmManager.cancel(pendingIntent);
-
-        long syncInterval = preferences.getSyncInterval() * (24 * 60 * 60 * 1000);
+        long syncInterval = preferences.getSyncInterval();
         if (syncInterval != 0) {
-            long nextSyncTime = preferences.getLastCompleteSyncTime() + syncInterval;
-
-            long now = System.currentTimeMillis();
-            if (nextSyncTime <= now) {
-                Database.getInstance(applicationContext).synchronize(false, false, null);
-                nextSyncTime = now + syncInterval;
-            }
-
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, nextSyncTime, syncInterval, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, syncInterval, pendingIntent);
         }
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Database.getInstance(context.getApplicationContext()).synchronize(false, false, null);
+    public void onReceive(Context applicationContext, Intent intent) {
+        Database.getInstance(applicationContext.getApplicationContext()).synchronize(false, false, null);
     }
 }
