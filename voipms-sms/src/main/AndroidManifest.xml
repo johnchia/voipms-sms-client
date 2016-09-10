@@ -121,5 +121,6 @@
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
+        <receiver  android:process=":remote" android:name=".receivers.SynchronizationIntervalReceiver"></receiver>
     </application>
 </manifest>
